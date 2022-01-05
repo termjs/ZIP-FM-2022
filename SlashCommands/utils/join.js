@@ -19,7 +19,7 @@ const blacklist = require("../../models/blacklist-guilds");
 module.exports = {
   name: "zipfm",
   description: "🔊 Nori radijo, pasikviesk mane į balso kanalą!",
-  // userPermissions: ["ADMINISTRATOR"],
+  userPermissions: ["ADMINISTRATOR"],
   /**
    * @param {Client} client
    * @param {CommandInteraction} interaction
@@ -29,7 +29,6 @@ module.exports = {
   run: async (client, interaction, args) => {
     const listPerms = ["CONNECT", "PRIORITY_SPEAKER", "SPEAK", "USE_APPLICATION_COMMANDS", "USE_EXTERNAL_EMOJIS", "USE_VAD"];
     if (interaction.guild.me.permissions.has(listPerms)) {
-      if (interaction.member.permissions.has("KICK_MEMBERS")) {
 
       const subscriptions = new Map();
       const player = createAudioPlayer();
@@ -115,9 +114,9 @@ module.exports = {
           players.delete(`${interaction.guild.name}`, 1);
         }
       );
-    } else {
-      return interaction.followUp({ content: "Tik vartotojas turintis \`KICK_MEMBERS\` privilegijas gali naudoti šią komandą!" });
-    }
+  //   } else {
+  //     return interaction.followUp({ content: "Tik vartotojas turintis \`KICK_MEMBERS\` privilegijas gali naudoti šią komandą!" });
+  //   }
   } else {
       return interaction.followUp({ content: "Man nebuvo suteiktos reikiamos privilegijos! 👉👈" });
     }

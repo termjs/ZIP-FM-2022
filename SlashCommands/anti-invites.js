@@ -11,7 +11,7 @@ client.on("messageCreate", async (message) => {
         const links = ['discord.gg/', 'discord.com/invite', 'discord.io/'];
 
         for (const link of links) {
-            const serverINV = "https://discord.gg/m76nSqdhzq";
+            const serverINV = "https://discord.gg/NpxRrvnqTv";
             if (message.content.includes(serverINV)) return;
             if (message.content.includes(link)) return deleteMessage();
         }

@@ -22,7 +22,7 @@ module.exports = {
         const rowas = new MessageActionRow()
 			.addComponents(
 				new MessageButton()
-                    .setURL('https://discord.gg/7vfEawywqQ')
+                    .setURL('https://discord.gg/NpxRrvnqTv')
 					.setLabel('Prisijungti į Support serverį')
 					.setStyle('LINK'),
 			);

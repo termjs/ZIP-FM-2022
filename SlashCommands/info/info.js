@@ -25,30 +25,30 @@ module.exports = {
         const sukurimoDiena = 28;
         const sukurimoMen = 12;
 
-        let totalMetai = Math.floor(data/31556952000);
-        let totalMen = Math.ceil((data/2629746000)-(12*(Math.floor(data/31556952000))));
-        let totalDiena = Math.ceil((data/86400000)-(Math.floor(data/31556952000)*365));
+        let totalMetai = Math.floor(data / 31556952000);
+        let totalMen = Math.ceil((data / 2629746000) - (12 * (Math.floor(data / 31556952000))));
+        let totalDiena = Math.ceil((data / 86400000) - (Math.floor(data / 31556952000) * 365));
 
-        const skirtumas = totalMetai+"m. "+totalMen+"m. "+totalDiena+"d.";
-        
+        const skirtumas = totalMetai + "m. " + totalMen + "m. " + totalDiena + "d.";
+
         const embedInfo = new MessageEmbed()
-        .setTitle('ZIP FM - Statistika')
-        .setDescription('Čia galite matyti Jums reikalingiausią statistiką apie ZIP FM.\nStatistikos informacija yra tokia, kaip: serverių skaičius, prie kurių esu prisijungęs, keliuose balso kanaluose šiuo metu groju ir koks skirtumas tarp mano pirmosios versijos paleidimo!')
+            .setTitle('ZIP FM - Statistika')
+            .setDescription('Čia galite matyti Jums reikalingiausią statistiką apie ZIP FM.\nStatistikos informacija yra tokia, kaip: serverių skaičius, prie kurių esu prisijungęs, keliuose balso kanaluose šiuo metu groju ir koks skirtumas tarp mano pirmosios versijos paleidimo!')
             .addFields(
-                    {
-                        name: '🏘️ **Apsigyvenęs**',
-                        value: `\`${client.guilds.cache.size}\` serveriuose`, inline: true,
-                    },
-                    {
-                        name: '👽 **Prisijungęs**',
-                        value: `Prie \`${players.size}\` kanalų`, inline: true,
-                    },
-                    {
-                        name: '<:discorddev:796225834263511080> **Paleidimo Data**', inline: true,
-                        value: `Prieš \`${skirtumas}\``,
-                    },
-                );
-                await interaction.followUp({ embeds: [embedInfo] });
-                
+                {
+                    name: '🏘️ **Apsigyvenęs**',
+                    value: `\`${client.guilds.cache.size}\` serveriuose`, inline: true,
+                },
+                {
+                    name: '👽 **Prisijungęs**',
+                    value: `Prie \`${players.size}\` kanalų`, inline: true,
+                },
+                {
+                    name: '<:discorddev:796225834263511080> **Paleidimo Data**', inline: true,
+                    value: `Prieš \`${skirtumas}\``,
+                },
+            );
+        await interaction.followUp({ embeds: [embedInfo] });
+
     }
 }
