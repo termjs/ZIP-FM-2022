@@ -7,32 +7,14 @@ const RadioSubscription = require("../connection/connection");
 const timesUsed = {};
 
 client.on("interactionCreate", async (interaction) => {
+
     // Slash Command Handling
-
     if (interaction.isCommand()) {
-        await interaction.deferReply({ ephemeral: true }).catch(() => {});
-
-        // const server = client.guilds.cache.get('740542533657952347');
-        // const user = interaction.user.id;
-        // if (server.members.cache.has(user)) {
-        //     console.log('user is in a specific guild and commands work globally for him')
-       
-        // if (!interaction.user.id == "740542533657952347") {
-        //     console.log('wow')
-        // }
-        // jei user nera guild, console.log("wow")
+        await interaction.deferReply({ ephemeral: true }).catch(() => { });
 
         if (!interaction.guild) return interaction.followUp('Komandos yra galimos tik serveriuose ⁉️');
 
-
-
-        // const server = interaction.guild; // server = specific guild
-
         const args = [];
-
-        // const member = await server.members.fetch(args[0]); // check if the member is in that guild
-
-        // if (!member) return interaction.followUp('a user with this ID does not exist'); // if the member is not in that guild, return
 
         if (interaction) {
             // const channel = interaction.channel.voice.id;
@@ -50,25 +32,20 @@ client.on("interactionCreate", async (interaction) => {
                 interaction.followUp({ content: 'Tavo anketa yra (/) buvo pateikta!' });
                 return;
             }
-            if (interaction.commandName === 'zipfm') {
-                timesUsed[interaction.guildId] = (timesUsed[interaction.guildId] || 0) + 1;
-                // console.log(`${timesUsed[interaction.guildId]} - zipfm`);
-                
-                if (timesUsed[interaction.guildId] === 5) {
-                    await blacklist.create({ Server: interaction.guildId });
-                    // interaction.followUp({ content: 'Dėl command abuse serveris buvo įtrauktas į juodajį sąrašą!' });
-                    // Jei nori gali atsisiusti sau embeda cia nes blacklisted tures visa info apie uzbaninta serva, nu ne visa tik id
+            if (interaction.member.voice.channel) {
+                if (interaction.commandName === 'zipfm') {
+                    timesUsed[interaction.guildId] = (timesUsed[interaction.guildId] || 0) + 1;
+                    // console.log(`${timesUsed[interaction.guildId]} - zipfm`);
 
+                    if (timesUsed[interaction.guildId] === 5) {
+                        await blacklist.create({ Server: interaction.guildId });
+                    }
 
-                    
-                    // const serverID = '922132715384479745';
-                    // let blacklistChannel = serverID.channels.find(c => c.name == "blacklisted" && c.type == "channel")
-                    // blacklistChannel.send('hei')
+                    setTimeout(() => { delete timesUsed[interaction.guildId] }, 20000);
                 }
-                setTimeout(() => { delete timesUsed[interaction.guildId] }, 20000);
             }
         }
-        
+
         const cmd = client.slashCommands.get(interaction.commandName);
         if (!cmd)
             return interaction.followUp({ content: "Iškilo problema, bandyk dar kartą 😢" });
@@ -86,18 +63,12 @@ client.on("interactionCreate", async (interaction) => {
 
         cmd.run(client, interaction, args);
 
-    // } else {
-    //     console.log('nea')
-    //     interaction.followUp('ateik i supporta');
-    //     return;
-    // }
-
-    // Context Menu Handling
-    if (interaction.isContextMenu()) {
-        await interaction.deferReply({ ephemeral: true });
-        const command = client.slashCommands.get(interaction.commandName);
-        if (command) command.run(client, interaction);
+        // Context Menu Handling
+        if (interaction.isContextMenu()) {
+            await interaction.deferReply({ ephemeral: true });
+            const command = client.slashCommands.get(interaction.commandName);
+            if (command) command.run(client, interaction);
+        }
     }
-} 
-    //kelt cia koduka 
+
 });
