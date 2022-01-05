@@ -40,48 +40,60 @@ module.exports = async (client) => {
         if (["MESSAGE", "USER"].includes(file.type)) delete file.description;
         if (file.userPermissions) file.defaultPermission = false;
         arrayOfSlashCommands.push(file);
-    });   
+    });
+
     client.on("ready", async () => {
-        
         await client.application.commands.set(arrayOfSlashCommands).then((cmd) => {
-            client.guilds.cache.forEach(async(guild) => {
-            const getRoles = (commandName) => {
-                const permissions = arrayOfSlashCommands.find(
-                    (x) => x.name === commandName
-                ).userPermissions;
-                if (!permissions) return null;
-                return guild.roles.cache.filter(x => x.permissions.has(permissions) && !x.managed);
-            };
+            client.guilds.cache.forEach(async (guild) => {
+                const getRoles = (commandName) => {
+                    const permissions = arrayOfSlashCommands.find(
+                        (x) => x.name === commandName
+                    ).userPermissions;
 
-            const fullPermissions = cmd.reduce((accumulator, x) => {
-                const roles = getRoles(x.name);
-                if (!roles) return accumulator;
+                    if (!permissions) return null;
+                    return guild.roles.cache.filter(x => x.permissions.has(permissions) && !x.managed);
+                };
 
-                const permissions = roles.reduce((a, v) => {
+                const fullPermissions = cmd.reduce((accumulator, x) => {
+                    const roles = getRoles(x.name);
+                    if (!roles) return accumulator;
+
+                    const permissions = roles.reduce((a, v) => {
+                        return [
+                            ...a,
+                            {
+                                id: v.id,
+                                type: "ROLE",
+                                permission: true,
+                            },
+                        ];
+                    }, []);
+
                     return [
-                        ...a,
+                        ...accumulator,
                         {
-                            id: v.id,
-                            type: "ROLE",
-                            permission: true,
+                            id: x.id,
+                            permissions,
                         },
                     ];
                 }, []);
+                client.application.commands.cache.find(c => c.name === "anketa").setDefaultPermission(false)
+                await guild.commands.permissions.set({ fullPermissions });
 
-                return [
-                    ...accumulator,
-                    {
-                        id: x.id,
-                        permissions,
-                    },
-                ];
-            }, []);
-           
-            await guild.commands.permissions.set({ fullPermissions });
-            
+                client.application.commands.permissions.set({
+                    guild: "740542533657952347", command: "926208710827733033",
+                    permissions: [
+                        {
+                            id: "928280921050857562",
+                            type: "ROLE",
+                            permission: true,
+                        },
+                    ]
+                }).then(console.log('Setting fullPermissions')).catch(console.error);
+            });
         });
     });
-});
+
 
     // mongoose
     const { mongooseConnectionString } = require('../config.json')
