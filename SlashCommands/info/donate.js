@@ -22,7 +22,7 @@ module.exports = {
         const row = new MessageActionRow()
             .addComponents(
                 new MessageButton()
-                    .setURL('https://www.paypal.me/termissues')
+                    .setURL('https://PAYPAL-LINK')
                     .setLabel('Paremti Kūrėją ir Projektą')
                     .setStyle('LINK'),
             );
